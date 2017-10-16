@@ -266,12 +266,13 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	Bool_t blindA, // Assume no signal, so we get expected limits
 	Int_t calculationType, // See comments below - 0 for toys, 2 for asym fit
 	Int_t par_ntoys, // number of events in Asimov sample in case of calc type 2 or 3, number of events in each toys for type 0; default should be : 50000
-	map<string,double> systematic_errors // The errors to be used in the fit
+        Int_t randomSeed, // number to set random seed to
+        map<string,double> systematic_errors // The errors to be used in the fit
 )
 {
 
 	// set RooFit random seed to a fix value for reproducible results
-	RooRandom::randomGenerator()->SetSeed(4357);
+	RooRandom::randomGenerator()->SetSeed(randomSeed);
 
 	// init
 	RooWorkspace::autoImportClassCode(kTRUE); // set default behaviour of RooWorkspace when importing new classes

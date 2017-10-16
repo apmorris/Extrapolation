@@ -31,6 +31,7 @@ struct abcd_limit_config {
 	std::string fileName; // Output filename for this
 	double rescaleSignalTo; // How to rescale region A during the limit setting
 	int nToys; // How many toys to run if using the toy method
+        int randomSeed; // Seed for random number generator if using toys
 	std::map<std::string, double> systematic_errors;
 	double luminosity; // Lumi in fb that we are looking at
 };

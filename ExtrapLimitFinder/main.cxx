@@ -159,7 +159,8 @@ config parse_command_line(int argc, char **argv)
 		Flag("ExtrapAtEachLifetime", "l", "Refit limit at each lifetime point to take into account differing efficiencies at A, B, C and D"),
 		Arg("RescaleSignal", "r", "Rescale the expected signal in region A to this number during limit setting", Is::Optional),
 		Arg("NToys", "n", "Number of toys to use when using toy method. Defaults to 5000.", Is::Optional),
-
+                Arg("Seed", "s", "Random number generator seed. Defaults to -1.", Is::Optional),
+	
 		// General
 		Flag("Unofficial", "u", "Turn off some protection checks so it can run even thought input isn't 'just right'"),
 	});
@@ -198,6 +199,9 @@ config parse_command_line(int argc, char **argv)
 	result.limit_settings.luminosity = args.IsSet("Luminosity")
 		? args.GetAsFloat("Luminosity")
 		: 3.2;
+	result.limit_settings.randomSeed = args.IsSet("Seed")
+	        ? args.GetAsInt("Seed")
+	        : -1;
 
 	// Systematic Errors
 	result.limit_settings.systematic_errors["lumi"] = 0.021; // Final lumi is 2.1%
