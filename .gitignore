@@ -61,7 +61,7 @@ artifacts/
 *.tlh
 *.tmp
 *.tmp_proj
-#*.log
+*.log
 *.vspscc
 *.vssscc
 .builds
@@ -269,3 +269,8 @@ FindLimit/FindLimit
 *.so
 *\#
 ExtrapolateByBeta/ExtrapolateByBeta
+*.done
+*.fail
+*.run
+*.err
+*brasilianFlag.C
