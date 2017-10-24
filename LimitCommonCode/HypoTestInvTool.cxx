@@ -226,6 +226,7 @@ HypoTestInvTool::AnalyzeResult(HypoTestInverterResult * r,
 
 	//plot->Draw("CLb 2CL");  // plot all and Clb
 	//plot->Draw("EXP");  // plot all and Clb
+	c1->SetLogy();
 	plot->Draw("");  // plot all and Clb
 	c1->SaveAs("brasilianFlag.pdf");
 	c1->SaveAs("brasilianFlag.C");
@@ -685,6 +686,11 @@ HypoTestInvTool::RunInverter(Int_t enne, TString esse, RooWorkspace * w,
 		}
 		else
 			std::cout << "ERROR : failed to re-build distributions " << std::endl;
+	}
+ 
+	for (double muTest =0; muTest<0.002 ; muTest+=0.0001){
+    std::cout << "LC DEBUG manually run " << muTest <<std::endl;
+   calc.RunOnePoint(muTest); 
 	}
 
 	return r;
