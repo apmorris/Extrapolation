@@ -33,6 +33,7 @@ bool readVecBool(std::vector<bool> vec, int index){
 
 
   // This is basic selection. All events must pass this in order to be part of the analysis.
+  // UPDATE Oct 2017: This selection is implemented in the GenerateROOTFiles2017.py script - it may not be up to date here!!
 bool event_selection(int selection,
 		     double j1s_pt,
 		     bool j1s_isGoodLLP, bool j2s_isGoodLLP,
@@ -73,9 +74,11 @@ bool event_selection(int selection,
       && event_sumMinDR > 0.5
       && eventBDT_value > 0.1;
 
-      return r; // DON'T YOU FORGET THIS
+      return r; // DON'T YOU, FORGET ABOUT ME
     }
   }
+
+
 
   // This is the selection required to get into the ABCD plane, anywhere. But somewhere. :-)
   // As above the jets are BDT13Lxy ordered, not pT ordered!

@@ -74,6 +74,18 @@ t.Branch( 'RegionD', RegionD, 'RegionD/I')
 counter = 0
 maxcount = args.nevents
 
+n_preselection = 0
+n_eventBDT = 0
+n_triggerMatch = 0
+n_timing = 0
+n_BIBveto = 0
+n_MHToHT = 0
+n_logRatio = 0
+n_pT_sel1 = 0
+n_pT_sel2 = 0
+n_RegionA_sel1 = 0
+n_RegionA_sel2 = 0
+
 #For each event:
 # - check if it passes the trigger and selection
 # - where it lies in the ABCD plane
@@ -83,24 +95,44 @@ for ev in tree:
   counter += 1
   if maxcount > 0:
     if counter > maxcount: break
+
+  isSelected = False
+  PassBibJetVeto=True
+
+  for i in range (ev.CalibJet_BDT3weights_bib.size()):
+    if (ev.CalibJet_BDT3weights_bib[i] > 0.6 and ev.CalibJet_pT[i] > 40 and abs(ev.CalibJet_eta[i]) < 2.5 and ev.CalibJet_isGoodLLP[i] ): PassBibJetVeto = False
+
+  if(ev.BDT3weights_signal_cleanJet_index.size()>=2 and ev.event_sumMinDR > 0.5 and ev.event_passCalRatio_cleanLLP_TAU60 and r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT3weights_signal_cleanJet_index[0]) and r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT3weights_signal_cleanJet_index[1])): 
+    n_preselection+=1
+    if(ev.eventBDT_value > 0.05):
+      n_eventBDT+=1
+      # ev.CalibJet_logRatio[ev.BDT3weights_signal_cleanJet_index[0]] > 1.2 or same for [1]
+      if((r.readVecBool(ev.CalibJet_isCRHLTJet,ev.BDT3weights_signal_cleanJet_index[0]) and ev.CalibJet_minDRTrkpt2[ev.BDT3weights_signal_cleanJet_index[0]] > 0.2 and ev.CalibJet_logRatio[ev.BDT3weights_signal_cleanJet_index[0]] > 1.2) or (r.readVecBool(ev.CalibJet_isCRHLTJet,ev.BDT3weights_signal_cleanJet_index[1]) and ev.CalibJet_minDRTrkpt2[ev.BDT3weights_signal_cleanJet_index[1]] >0.2 and ev.CalibJet_logRatio[ev.BDT3weights_signal_cleanJet_index[1]] > 1.2)):
+        n_triggerMatch+=1
+        if(ev.CalibJet_time[ev.BDT3weights_signal_cleanJet_index[0]] > -3 and ev.CalibJet_time[ev.BDT3weights_signal_cleanJet_index[1]] > -3 and ev.CalibJet_time[ev.BDT3weights_signal_cleanJet_index[0]] <15 and ev.CalibJet_time[ev.BDT3weights_signal_cleanJet_index[1]] < 15 and ev.CalibJet_time[ev.BDT3weights_bib_cleanJet_index[0]] > -3 and ev.CalibJet_time[ev.BDT3weights_bib_cleanJet_index[1]] > -3 and ev.CalibJet_time[ev.BDT3weights_bib_cleanJet_index[0]] < 15 and ev.CalibJet_time[ev.BDT3weights_bib_cleanJet_index[1]] < 15):
+          n_timing+=1
+          if(PassBibJetVeto):
+            n_BIBveto+=1
+            if(ev.event_MHToHT < 0.8):
+              n_MHToHT+=1
+              if((ev.CalibJet_logRatio[ev.BDT3weights_signal_cleanJet_index[0]] + ev.CalibJet_logRatio[ev.BDT3weights_signal_cleanJet_index[1]]) > 2):
+                n_logRatio+=1
+                if(ev.CalibJet_pT[ev.BDT3weights_signal_cleanJet_index[0]] > 100):
+                  n_pT_sel1+=1
+                  if(args.mH<300): isSelected = True
+                  if(ev.event_sumMinDR>1.5 and ev.eventBDT_value > 0.1):
+                    n_RegionA_sel1+=1
+                if(ev.CalibJet_pT[ev.BDT3weights_signal_cleanJet_index[0]] > 160):
+                  n_pT_sel2+=1
+                  if(args.mH>399): isSelected = True
+                  if(ev.event_sumMinDR>1.5 and ev.eventBDT_value > 0.1):
+                    n_RegionA_sel2+=1
   
   passedTrigger = False
   passedTrigger = ev.event_passCalRatio_cleanLLP_TAU60
   
-  isSelected = True
-
-  PassBibJetVeto=True
-  for i in range (ev.CalibJet_BDT3weights_bib.size()):
-    if (ev.CalibJet_BDT3weights_bib[i] > 0.6 and ev.CalibJet_pT[i] > 40 and abs(ev.CalibJet_eta[i]) < 2.5 and ev.CalibJet_isGoodLLP[i] ): PassBibJetVeto = False
-
-  if ev.event_NCleanJets>1 and PassBibJetVeto and args.mH>399: 
-    isSelected = r.event_selection(2, ev.CalibJet_pT[ev.BDT3weights_signal_cleanJet_index[0]],r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT3weights_signal_cleanJet_index[0]),r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT3weights_signal_cleanJet_index[1]),ev.CalibJet_time[ev.BDT3weights_signal_cleanJet_index[0]],ev.CalibJet_time[ev.BDT3weights_signal_cleanJet_index[1]],ev.CalibJet_time[ev.BDT3weights_bib_cleanJet_index[0]],ev.CalibJet_time[ev.BDT3weights_bib_cleanJet_index[1]],ev.event_MHToHT,ev.event_sumMinDR,ev.CalibJet_minDRTrkpt2[ev.BDT3weights_signal_cleanJet_index[0]],ev.CalibJet_minDRTrkpt2[ev.BDT3weights_signal_cleanJet_index[1]],r.readVecBool(ev.CalibJet_isCRHLTJet,ev.BDT3weights_signal_cleanJet_index[0]),r.readVecBool(ev.CalibJet_isCRHLTJet,ev.BDT3weights_signal_cleanJet_index[1]),ev.CalibJet_logRatio[ev.BDT3weights_signal_cleanJet_index[0]],ev.CalibJet_logRatio[ev.BDT3weights_signal_cleanJet_index[1]],ev.eventBDT_value)
-
-  if ev.event_NCleanJets>1 and PassBibJetVeto and args.mH<399 : isSelected = r.event_selection(1, ev.CalibJet_pT[ev.BDT3weights_signal_cleanJet_index[0]],r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT3weights_signal_cleanJet_index[0]),r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT3weights_signal_cleanJet_index[1]),ev.CalibJet_time[ev.BDT3weights_signal_cleanJet_index[0]],ev.CalibJet_time[ev.BDT3weights_signal_cleanJet_index[1]],ev.CalibJet_time[ev.BDT3weights_bib_cleanJet_index[0]],ev.CalibJet_time[ev.BDT3weights_bib_cleanJet_index[1]],ev.event_MHToHT,ev.event_sumMinDR,ev.CalibJet_minDRTrkpt2[ev.BDT3weights_signal_cleanJet_index[0]],ev.CalibJet_minDRTrkpt2[ev.BDT3weights_signal_cleanJet_index[1]],r.readVecBool(ev.CalibJet_isCRHLTJet,ev.BDT3weights_signal_cleanJet_index[0]),r.readVecBool(ev.CalibJet_isCRHLTJet,ev.BDT3weights_signal_cleanJet_index[1]),ev.CalibJet_logRatio[ev.BDT3weights_signal_cleanJet_index[0]],ev.CalibJet_logRatio[ev.BDT3weights_signal_cleanJet_index[1]],ev.eventBDT_value)
-
   region = 0
-
-  if (ev.event_NCleanJets>1): region = r.event_ABCD_plane(ev.eventBDT_value,ev.event_sumMinDR)
+  region = r.event_ABCD_plane(ev.eventBDT_value,ev.event_sumMinDR)
 
   llp1_E[0] = ev.LLP_E[0]
   llp2_E[0] = ev.LLP_E[1]
@@ -130,3 +162,19 @@ for ev in tree:
 
 f.Write()
 f.Close()
+
+print "Cutflow results for sample ", args.sample
+print "================================================="
+print "                Preselection : ", n_preselection
+print "             eventBDT > 0.05 : ", n_eventBDT
+print "            Trigger matching : ", n_triggerMatch
+print "     -3 < time(sig,bib) < 15 : ", n_timing
+print "                  0 BIB jets : ", n_BIBveto
+print "             HTmiss/HT < 0.8 : ", n_MHToHT
+print "sum(logRatio(jet1,jet2)) > 2 : ", n_logRatio
+print "-------------------------------------------------"
+print "       Selection 1  pT > 100 : ", n_pT_sel1
+print "                    Region A : ", n_RegionA_sel1
+print "-------------------------------------------------"
+print "       Selection 2  pT > 160 : ", n_pT_sel2
+print "                    Region A : ", n_RegionA_sel2
