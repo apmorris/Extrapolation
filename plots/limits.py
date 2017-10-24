@@ -89,13 +89,13 @@ mS = args.mS
 x_min = 0.01
 if (mH == "1000"): 
     print "matched mH = 1000"
-    if mS == "400": x_min = 0.4
-    if mS == "150": x_min = 0.1
+    if mS == "400": x_min,y_min = 0.4,(y_min-0.5*tg_2s.GetXaxis().GetTickLength())
+    if mS == "150": x_min,y_min = 0.1,y_min
 if mH == "400":
-    if mS == "100": x_min = 0.05
+    if mS == "100": x_min,y_min = 0.05,(y_min-0.5*tg_2s.GetXaxis().GetTickLength())
 
 tg_2s.GetXaxis().SetLimits(x_min, x_max)
-tg_2s.SetMinimum(y_min - 0.5*tg_2s.GetXaxis().GetTickLength())
+tg_2s.SetMinimum(y_min)
 
 tg_2s.GetXaxis().SetTitle('s proper decay length [m]')
 tg_2s.GetYaxis().SetTitle('95% CL Upper Limit on #sigma #times BR [pb]')
