@@ -44,13 +44,14 @@ bool readVecBool(std::vector<bool> vec, int index){
 		       )
   {
         auto r = j1_pt > 150.0 && j2_pt > 120.0
-	  && abs(j1_eta) < 2.5 && abs(j2_eta) < 2.5
+	    && abs(j1_eta) < 2.5 && abs(j2_eta) < 2.5
             && j1_isGoodLLP && j2_isGoodLLP
-	  && abs(wrapPhi(j1_phi - j2_phi)) > 0.75
+	    && abs(wrapPhi(j1_phi - j2_phi)) > 0.75
             && j1_time > -3.0 && j2_time > -3.0
             && j1_time < 15.0 && j2_time < 15.0
             && event_HTMiss / event_HT < 0.3
-      && sumMinDRTrk2pt50 > 0.5 && j1_BDTscore > 0.2 && j2_BDTscore > -0.2;
+            && sumMinDRTrk2pt50 > 0.5 
+            && j1_BDTscore > 0.2 && j2_BDTscore > -0.2;
         //std::cout << r 
         //    << " - j1pt: " << j1_pt << " j2pt:" << j2_pt 
         //    << " - eta: " << j1_eta << ", " << j2_eta
@@ -91,8 +92,8 @@ bool readVecBool(std::vector<bool> vec, int index){
         // Calc the axes that will tell us where this thing is.
         auto sumBDT13Lxy = j1_bdt13lxy + j2_bdt13lxy;
 
-        auto sumMinDRUpper = sumMinDRTrk2pt50 >= 1.5;
-        auto sumBDT13LxyUpper = sumBDT13Lxy >= 0.15;
+        auto sumMinDRUpper = sumMinDRTrk2pt50 > 1.5;
+        auto sumBDT13LxyUpper = sumBDT13Lxy > 0.15;
 
         if (sumMinDRUpper && sumBDT13LxyUpper) {
 	  return 1; // A
