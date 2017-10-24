@@ -278,23 +278,19 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 
 	//Inputs
 	// signal
-	//Double_t ns_A = 23180;
-	//Double_t ns_B = 3418;
-	//Double_t ns_D = 931;
-	//Double_t ns_C = 105;
-	//Double_t ns_A = 23131;
-	//Double_t ns_B = 3406;
-	//Double_t ns_D = 914;
-	//Double_t ns_C = 108;
-	Double_t ns_A = 41;
-	Double_t ns_B = 3065.6;
-	Double_t ns_D = 1085.0;
-	Double_t ns_C = 101.9;
+	Double_t ns_A = s[0];
+	if (ns_A <= 0) {
+		std::cout << "ERROR: 0 signal events in signal region (A)!!! --> Check inputs!  s[0] = " << ns_A << std::endl;
+		throw runtime_error("No signal events found in signal region!");
+	}
+	Double_t ns_B = s[1];
+	Double_t ns_C = s[2];
+	Double_t ns_D = s[3];
 	// data
-	Double_t nd_A = 24;
-	Double_t nd_B = 16;
-	Double_t nd_C = 34;
-	Double_t nd_D = 39;
+	Double_t nd_A = n[0];
+	Double_t nd_B = n[1];
+	Double_t nd_C = n[2];
+	Double_t nd_D = n[3];
 	// MC based BG
 	Double_t nb_A = b[0];
 	Double_t nb_B = b[1];
@@ -305,12 +301,10 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	Double_t nc_B = c[1];
 	Double_t nc_C = c[2];
 	Double_t nc_D = c[3];
-	blindA=false;
-	//blindA=false;
 
 	// Some initial printout ...
-	Double_t nd_A_expected = 23.5;
-	//if (nd_C > 0) nd_A_expected = nd_B * nd_D / nd_C;
+	Double_t nd_A_expected = 0.0;
+	if (nd_C > 0) nd_A_expected = nd_B * nd_D / nd_C;
 	std::cout << "Obs events in signal region (A) estimated from control regions using PLAIN ABCD: " << nd_A_expected << std::endl;
 	std::cout << "              " << std::endl;
 
@@ -331,7 +325,7 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	Double_t sr_B = ns_B / ns_A;
 	Double_t sr_C = ns_C / ns_A;
 	Double_t sr_D = ns_D / ns_A;
-	Double_t mu_guess = 0.01234;//1 / ns_A; // starting guess for mu = N_sig_UL / N_sig_exp assume no signal observed (~3 events UL at 95% CL)
+	Double_t mu_guess = 3.0 / ns_A; // starting guess for mu = N_sig_UL / N_sig_exp assume no signal observed (~3 events UL at 95% CL)
 
 	std::cout << "Signal ratios B/A C/A and D/A: " << sr_B << " / " << sr_C << " / " << sr_D << std::endl;
 	std::cout << "Guess mu: " << mu_guess << std::endl;
@@ -380,7 +374,7 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	wspace->factory("ND[0,20000]");
 
 	// POI
-	wspace->factory(TString::Format("mu[%f,0,1000]", mu_guess));  // mu = NsA/Ns0 (Ns0 = expected events)
+	wspace->factory(TString::Format("mu[%f,0,1]", mu_guess));  // mu = NsA/Ns0 (Ns0 = expected events)
 	//note: SM means mu=0 (used for the BG only hypotesis for the expected limit
 
 	// pdf parameters
@@ -411,9 +405,8 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 
 	//Systematic uncertanties' nuisance parameters 
 	systematic_errors["lumi"]=0.021;
-	//systematic_errors["mc_eff"]= 0.0292436; //2015 - mH400: 0.024 - mH600: 0.059 - mH1000: 0.00086
-	systematic_errors["mc_eff"]= 0.174; //2015 - mH400: 0.024 - mH600: 0.059 - mH1000: 0.00086
-	systematic_errors["abcd"]=0.34;
+	systematic_errors["mc_eff"]=0.059; //2015 - mH400: 0.024 - mH600: 0.059 - mH1000: 0.00086
+	systematic_errors["abcd"]=0.36;
 
 	//lumi
 	wspace->factory("alpha_lumi[1, 0, 10]");
@@ -423,14 +416,14 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	wspace->factory(lumi_error.str().c_str());  // <--  2.1% final run2 2015
 	wspace->factory("Gaussian::constraint_lumi(nom_lumi, alpha_lumi, nom_sigma_lumi)");
 
-	wspace->factory("alpha_S[1, 0, 5]");  //systematic nuisance on signal (efficiencies etc.) and on MC bg
+	wspace->factory("alpha_S[1, 0, 2]");  //systematic nuisance on signal (efficiencies etc.) and on MC bg
 	wspace->factory("nom_S[1, 0, 10]");
 	ostringstream mc_events_error;
 	mc_events_error << "nom_sigma_S[" << get_error(systematic_errors, "mc_eff") << "]";
 	wspace->factory(mc_events_error.str().c_str()); // 24% totale displaced LJ analysis 2016
 	wspace->factory("Gaussian::constraint_S(nom_S, alpha_S, nom_sigma_S)");
 
-	wspace->factory("alpha_Q[1, 0, 5]");  //systematic nuisance on Multijet   
+	wspace->factory("alpha_Q[1, 0, 2]");  //systematic nuisance on Multijet   
 	wspace->factory("nom_Q[1, 0, 5]");
 	ostringstream abcd_error;
 	abcd_error << "nom_sigma_Q[" << get_error(systematic_errors, "abcd") << "]";
@@ -517,16 +510,12 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 		wspace->factory("PROD::model(obsA,obsB,obsC,obsD,constraint_lumi,constraint_Q,constraint_S, constraint_B)");
 	}
 	else {
-		wspace->factory("PROD::model(obsA,constraint_lumi,constraint_Q,constraint_S)");
-		//wspace->factory("PROD::model(obsA,obsB,obsC,obsD,constraint_lumi,constraint_Q,constraint_S)");
-		//wspace->factory("PROD::modelAOnly(obsA,constraint_lumi,constraint_Q,constraint_S)");
+		wspace->factory("PROD::model(obsA,obsB,obsC,obsD,constraint_lumi,constraint_Q,constraint_S)");
 	}
 
 	// sets
 	TString the_poi = "mu";
-	//TString the_nuis = ",Nq,tauB,tauD,alpha_lumi,alpha_Q,alpha_S";
-	//TString the_nuis = ",tauB,tauD,alpha_lumi,alpha_Q,alpha_S";
-	TString the_nuis = ",alpha_lumi,alpha_Q,alpha_S";
+	TString the_nuis = ",Nq,tauB,tauD,alpha_lumi,alpha_Q,alpha_S";
 	TString the_glob = ",nom_lumi,nom_Q,nom_S";
 	if (useC) {
 		the_nuis += ",alpha_C";
@@ -540,7 +529,7 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	std::cout << "nuisances:  " << the_nuis << std::endl;
 	std::cout << "global var: " << the_glob << std::endl;
 
-	wspace->defineSet("obs", "NA");
+	wspace->defineSet("obs", "NA,NB,NC,ND");
 	wspace->defineSet("poi", the_poi);
 	wspace->defineSet("nuis", the_nuis);
 	wspace->defineSet("glob", the_glob);
@@ -614,7 +603,7 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	std::cout << "All OK." << std::endl;
 
 	// CLs test
-   calculationType=3;
+
 	// calculationType
 	// type = 0 Freq calculator   (for toys)
 	// type = 1 Hybrid calculator (don't use this)
@@ -631,12 +620,10 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	//              = 6 Number of observed event as test statistic
 
 	Double_t par_poi_min = 0.0;   // mu scanned from par_poi_min to par_poi_max with par_npointscan steps
-  Double_t par_poi_max = 1;
+	Double_t par_poi_max = 0.01;
 	Int_t    par_npointscan = 500; // default: 100
 
 	auto score = StandardHypoTestInvDemo(0, "", out_filename, "wspace", "mc", "mc", "obsData", calculationType, testStatType, true, par_npointscan, par_poi_min, par_poi_max, par_ntoys);
-	//wspace->Print("v");
-	//wspace->allVars().Print("v");
 
 	return score;
 }
