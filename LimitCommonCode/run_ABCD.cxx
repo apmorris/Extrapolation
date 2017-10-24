@@ -278,14 +278,14 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 
 	//Inputs
 	// signal
-	Double_t ns_A = s[0];
+	Double_t ns_A = 41;//s[0];
 	if (ns_A <= 0) {
-		std::cout << "ERROR: 0 signal events in signal region (A)!!! --> Check inputs!  s[0] = " << ns_A << std::endl;
+	        std::cout << "ERROR: 0 signal events in signal region (A)!!! --> Check inputs!  s[0] = " << ns_A << std::endl;
 		throw runtime_error("No signal events found in signal region!");
 	}
-	Double_t ns_B = s[1];
-	Double_t ns_C = s[2];
-	Double_t ns_D = s[3];
+	Double_t ns_B = 3418;//s[1];
+	Double_t ns_C = 931;//s[2];
+	Double_t ns_D = 105;//s[3];
 	// data
 	Double_t nd_A = n[0];
 	Double_t nd_B = n[1];
@@ -380,12 +380,12 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	// pdf parameters
 	wspace->factory(TString::Format("lumi[%f]", 1.0));    // Luminosity (scale factor wrt the luinosity on dat)
 
-	wspace->factory(TString::Format("Ns0[%f,0,20000]", ns_A)); //Expected signal in region A
+	wspace->factory(TString::Format("Ns0[%f,0,20000]", 41)); //Expected signal in region A
 	wspace->factory(TString::Format("effB[%f,0,5000]", sr_B)); //Sig. eff. in region B wrt region A
 	wspace->factory(TString::Format("effC[%f,0,5000]", sr_C)); //Sig. eff. in region C wrt region A
 	wspace->factory(TString::Format("effD[%f,0,5000]", sr_D)); //Sig. eff. in region D wrt region A
 
-	wspace->factory(TString::Format("Nq[%f,0,20000]", ta_A)); //number of Multijet events in region A
+	wspace->factory(TString::Format("Nq[%f,0,20000]", 23.5)); //number of Multijet events in region A
 	wspace->factory(TString::Format("tauB[%f,0,1000]", ta_B)); //Multijet BG eff. in region B wrt region A
 	wspace->factory(TString::Format("tauD[%f,0,1000]", ta_D)); //Multijet BG eff. in region D wrt region A
 
@@ -403,11 +403,11 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 		wspace->factory(TString::Format("NcD[%f,0,1000]", nc_D)); // ... and D
 	}
 
-	//Systematic uncertanties' nuisance parameters 
-	systematic_errors["lumi"]=0.021;
-	systematic_errors["mc_eff"]=0.059; //2015 - mH400: 0.024 - mH600: 0.059 - mH1000: 0.00086
-	systematic_errors["abcd"]=0.36;
+	std::cout << ">>>>> Lumi error = " << get_error (systematic_errors, "lumi") << std::endl;
+	std::cout << ">>>>>   MC error = " << get_error (systematic_errors, "mc_eff") << std::endl;
+	std::cout << ">>>>> ABCD error = " << get_error (systematic_errors, "abcd") << std::endl;
 
+	//Systematic uncertanties' nuisance parameters 
 	//lumi
 	wspace->factory("alpha_lumi[1, 0, 10]");
 	wspace->factory("nom_lumi[1, 0, 10]");
@@ -419,14 +419,14 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	wspace->factory("alpha_S[1, 0, 2]");  //systematic nuisance on signal (efficiencies etc.) and on MC bg
 	wspace->factory("nom_S[1, 0, 10]");
 	ostringstream mc_events_error;
-	mc_events_error << "nom_sigma_S[" << get_error(systematic_errors, "mc_eff") << "]";
+	mc_events_error << "nom_sigma_S[" << "0.17" << "]";//get_error(systematic_errors, "mc_eff") << "]";
 	wspace->factory(mc_events_error.str().c_str()); // 24% totale displaced LJ analysis 2016
 	wspace->factory("Gaussian::constraint_S(nom_S, alpha_S, nom_sigma_S)");
 
 	wspace->factory("alpha_Q[1, 0, 2]");  //systematic nuisance on Multijet   
 	wspace->factory("nom_Q[1, 0, 5]");
 	ostringstream abcd_error;
-	abcd_error << "nom_sigma_Q[" << get_error(systematic_errors, "abcd") << "]";
+	abcd_error << "nom_sigma_Q[" << "0.34" << "]";//get_error(systematic_errors, "abcd") << "]";
 	wspace->factory(abcd_error.str().c_str());   //30%% on QCD from ABCD variations and closure tests
 	wspace->factory("Gaussian::constraint_Q(nom_Q, alpha_Q, nom_sigma_Q)");
 
@@ -510,12 +510,12 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 		wspace->factory("PROD::model(obsA,obsB,obsC,obsD,constraint_lumi,constraint_Q,constraint_S, constraint_B)");
 	}
 	else {
-		wspace->factory("PROD::model(obsA,obsB,obsC,obsD,constraint_lumi,constraint_Q,constraint_S)");
+		wspace->factory("PROD::model(obsA,constraint_lumi,constraint_Q,constraint_S)");
 	}
 
 	// sets
 	TString the_poi = "mu";
-	TString the_nuis = ",Nq,tauB,tauD,alpha_lumi,alpha_Q,alpha_S";
+	TString the_nuis = ",tauB,tauD,alpha_lumi,alpha_Q,alpha_S";
 	TString the_glob = ",nom_lumi,nom_Q,nom_S";
 	if (useC) {
 		the_nuis += ",alpha_C";
@@ -563,7 +563,7 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	} // loop on pdf parameters
 
 	// inspect workspace
-	wspace->Print();
+	wspace->Print("V");
 
 	////////////////////////////////////////////////////////////
 	// Generate toy data
@@ -620,7 +620,7 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	//              = 6 Number of observed event as test statistic
 
 	Double_t par_poi_min = 0.0;   // mu scanned from par_poi_min to par_poi_max with par_npointscan steps
-	Double_t par_poi_max = 0.01;
+	Double_t par_poi_max = 1.;//0.01;
 	Int_t    par_npointscan = 500; // default: 100
 
 	auto score = StandardHypoTestInvDemo(0, "", out_filename, "wspace", "mc", "mc", "obsData", calculationType, testStatType, true, par_npointscan, par_poi_min, par_poi_max, par_ntoys);

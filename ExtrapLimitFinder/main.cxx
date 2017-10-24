@@ -60,28 +60,28 @@ void fill_sys_errors(int scalarMass, map<string, double> &errors, bool unofficia
 	double jes, jesemf, jer, trigger, pileup;
 	switch (scalarMass) {
 	case 400:
-		jes = 0.0329;
-		jesemf = 0.1433;
-		jer = 0.0043;
-		trigger = 0.023;
-		pileup = 0.0402;
-		break;
+	  jes = 0.0329;
+	  jesemf = 0.1433;
+	  jer = 0.0043;
+	  trigger = 0.023;
+	  pileup = 0.0402;
+	  break;
 
 	case 600:
-		jes = 0.0148;
-		jesemf = 0.0535;
-		jer = 0.0040;
-		trigger = 0.015;
-		pileup = 0.0056;
-		break;
+	  jes = 0.0148;
+	  jesemf = 0.0535;
+	  jer = 0.0040;
+	  trigger = 0.015;
+	  pileup = 0.0056;
+	  break;
 
 	case 1000:
-		jes = 0.0051;
-		jesemf = 0.0178;
-		jer = 0.0005;
-		trigger = 0.010;
-		pileup = 0.0203;
-		break;
+	  jes = 0.0051;
+	  jesemf = 0.0178;
+	  jer = 0.0005;
+	  trigger = 0.010;
+	  pileup = 0.0203;
+	  break;
 
 	default:
 		if (unofficial) {
