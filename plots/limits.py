@@ -81,12 +81,12 @@ tg_2s.SetMaximum(5e3)
 tg_2s.SetFillColor(r.kYellow)
 tg_1s.SetFillColor(r.kGreen-4)
 
+x_min = 0.01
 x_max = tg_2s.GetXaxis().GetXmax()
 
 mH = args.mH
 mS = args.mS
-#print "mH: ",mH," mS: ",mS
-x_min = 0.01
+
 if (mH == "1000"): 
     print "matched mH = 1000"
     if mS == "400": x_min,y_min = 0.4,(y_min-0.5*tg_2s.GetXaxis().GetTickLength())
