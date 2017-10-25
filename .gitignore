@@ -278,4 +278,4 @@ ExtrapolateByBeta/ExtrapolateByBeta
 *.sh.o*
 *.sh
 *.out
-plots/output
+*/output
