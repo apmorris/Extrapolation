@@ -40,7 +40,9 @@ python GenerateROOTFiles2017.py -s <SignalSampleFile> -o <OutputFile> -n <nEvent
 ```
 
 `-s` Path to the sample file which is to be slimmed
+
 `-o` Desired name of the slimmed file, usually slim_mH***_mS***_dv**.root
+
 `-n` Number of events to process, for all events set to -1
 
 ---
@@ -84,10 +86,15 @@ make
 ```
 
 `-e` Name of the file with the extrapolation info, see previous step
+
 `-A` Number of data events observed in region A (set to 0 if blinded)
+
 `-B -C -D` Number of data events in regions B, C and D
+
 `-f` Desired name of the file containing the limit histograms, usually limit_mH***_mS***_dv**.root
+
 `-a` Use asymptotic fit rather than toys (toys are slow!)
+
 
 _NB:_ Make sure systematic errors are up to date in `main.cxx`
 
@@ -103,8 +110,12 @@ python limits.py -e <LimitFile> -H <mH> -S <mS> -p <PlotName>
 ```
 
 `-e` Name of the file with the limit histograms, see previous step
+
 `-H` Mass of heavy boson (GeV)
+
 `-S` Mass of scalar (GeV)
+
 `-p` File name for output limit plot, usually limit_mH***_mS***_dv**.pdf
+
 
 > Code inherited from Gordon Watts, modified to work on lxplus.
