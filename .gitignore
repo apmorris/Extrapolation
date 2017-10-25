@@ -279,4 +279,4 @@ ExtrapolateByBeta/ExtrapolateByBeta
 *.sh
 *.out
 
-plots/limit*.C
+*limit*.C
