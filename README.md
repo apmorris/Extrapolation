@@ -65,7 +65,7 @@ can then be turned into the classic limit plots.
 cd ../ExtrapLimitFinder/
 make clean
 make
-./ExtrapLimitFinder 
+./ExtrapLimitFinder -e <FileFromExtrap> -A <nObsA> -B <nObsB> -C <nObsC> -D <nObsD> -f <OutputFile> -a
 ```
 _NB:_ systematic errors are currently hardcoded into LimitCommonCode/run_ABCD.cxx
 

@@ -87,7 +87,7 @@ for ev in tree:
   passedTrigger = ev.event_passCalRatio_TAU60
 
   isSelected = False
-  if (ev.event_NJets>1): isSelected = r.event_selection(ev.CalibJet_pT[ev.BDT13Lxy_index[0]],ev.CalibJet_pT[ev.BDT13Lxy_index[1]],ev.CalibJet_eta[ev.BDT13Lxy_index[0]],ev.CalibJet_eta[ev.BDT13Lxy_index[1]],r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT13Lxy_index[0]),r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT13Lxy_index[1]),ev.CalibJet_phi[ev.BDT13Lxy_index[0]],ev.CalibJet_phi[ev.BDT13Lxy_index[1]],ev.CalibJet_time[ev.BDT13Lxy_index[0]],ev.CalibJet_time[ev.BDT13Lxy_index[1]],ev.event_HTMiss,ev.event_HT,ev.event_sumMinDR)
+  if (ev.event_NJets>1): isSelected = r.event_selection(ev.CalibJet_pT[ev.BDT13Lxy_index[0]],ev.CalibJet_pT[ev.BDT13Lxy_index[1]],ev.CalibJet_eta[ev.BDT13Lxy_index[0]],ev.CalibJet_eta[ev.BDT13Lxy_index[1]],r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT13Lxy_index[0]),r.readVecBool(ev.CalibJet_isGoodLLP,ev.BDT13Lxy_index[1]),ev.CalibJet_phi[ev.BDT13Lxy_index[0]],ev.CalibJet_phi[ev.BDT13Lxy_index[1]],ev.CalibJet_time[ev.BDT13Lxy_index[0]],ev.CalibJet_time[ev.BDT13Lxy_index[1]],ev.event_HTMiss,ev.event_HT,ev.event_sumMinDR, ev.CalibJet_BDT13Lxy[ev.BDT13Lxy_index[0]], ev.CalibJet_BDT13Lxy[ev.BDT13Lxy_index[1]])
   
   region = 0
   if (ev.event_NJets>1): region = r.event_ABCD_plane(ev.CalibJet_pT[ev.BDT13Lxy_index[0]],ev.CalibJet_pT[ev.BDT13Lxy_index[1]],ev.CalibJet_BDT13Lxy[ev.BDT13Lxy_index[0]],ev.CalibJet_BDT13Lxy[ev.BDT13Lxy_index[1]],ev.event_sumMinDR)

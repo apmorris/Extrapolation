@@ -212,12 +212,12 @@ config parse_command_line(int argc, char **argv)
 
 	// Next we have to determine what mass point we are looking at. This is required as the
 	// systematic errors do vary with mass.
-	int scalarMass = result.extrapolate_filename.find("mH100") != string::npos ? 100
-		: result.extrapolate_filename.find("mH125") != string::npos ? 125
-		: result.extrapolate_filename.find("mH200") != string::npos ? 200
-		: result.extrapolate_filename.find("mH400") != string::npos ? 400
-		: result.extrapolate_filename.find("mH600") != string::npos ? 600
-		: result.extrapolate_filename.find("mH1000") != string::npos ? 1000
+	int scalarMass = result.extrapolate_filename.find("mH100_") != string::npos ? 100
+		: result.extrapolate_filename.find("mH125_") != string::npos ? 125
+		: result.extrapolate_filename.find("mH200_") != string::npos ? 200
+		: result.extrapolate_filename.find("mH400_") != string::npos ? 400
+		: result.extrapolate_filename.find("mH600_") != string::npos ? 600
+		: result.extrapolate_filename.find("mH1000_") != string::npos ? 1000
 		: -1;
 
 	if (scalarMass <= 0.0) {

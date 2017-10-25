@@ -404,10 +404,6 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	}
 
 	//Systematic uncertanties' nuisance parameters 
-	systematic_errors["lumi"]=0.021;
-	systematic_errors["mc_eff"]=0.059;
-	systematic_errors["abcd"]=0.36;
-
 	//lumi
 	wspace->factory("alpha_lumi[1, 0, 10]");
 	wspace->factory("nom_lumi[1, 0, 10]");

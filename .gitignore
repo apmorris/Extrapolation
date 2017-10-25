@@ -269,3 +269,14 @@ FindLimit/FindLimit
 *.so
 *\#
 ExtrapolateByBeta/ExtrapolateByBeta
+*.done
+*.fail
+*.run
+*.err
+*brasilianFlag.C
+*.sh.e*
+*.sh.o*
+*.sh
+*.out
+
+plots/limit*.C
