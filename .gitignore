@@ -278,8 +278,4 @@ ExtrapolateByBeta/ExtrapolateByBeta
 *.sh.o*
 *.sh
 *.out
-
-plots/limit_mH1000_mS400_lt5m_mc15_304820.C
-plots/limit_mH400_mS100_lt5m_mc15_304811.C
-plots/limit_mH600_mS150_lt5m_mc15_304815.C
-plots/limit*.C
+plots/output
