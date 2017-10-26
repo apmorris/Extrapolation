@@ -60,39 +60,39 @@ void fill_sys_errors(int scalarMass, map<string, double> &errors, bool unofficia
 	double jes, jesemf, jer, trigger, pileup;
 	switch (scalarMass) {
 	case 400:
-		jes = 0.0329;
-		jesemf = 0.1433;
-		jer = 0.0043;
-		trigger = 0.023;
-		pileup = 0.0402;
+		jes = 0.01;
+		jesemf = 0.033;
+		jer = 0.0016;
+		trigger = 0.017;
+		pileup = 0.047;
 		break;
 
 	case 600:
-		jes = 0.0148;
-		jesemf = 0.0535;
-		jer = 0.0040;
-		trigger = 0.015;
-		pileup = 0.0056;
+		jes = 0.006;
+		jesemf = 0.01;
+		jer = 0.011;
+		trigger = 0.011;
+		pileup = 0.019;
 		break;
 
 	case 1000:
-		jes = 0.0051;
-		jesemf = 0.0178;
-		jer = 0.0005;
-		trigger = 0.010;
-		pileup = 0.0203;
+		jes = 0.009;
+		jesemf = 0.007;
+		jer = 0.01;
+		trigger = 0.007;
+		pileup = 0.027;
 		break;
 
 	default:
 		if (unofficial) {
 			// Use 400 for now
 			cout << "*** -> Unknown systematic errors for scalar mass " << scalarMass << " - using 400 GeV" << endl;
-			jes = 0.0329;
-			jesemf = 0.1433;
-			jer = 0.0043;
-			trigger = 0.05;
-			pileup = 0.0402;
-			break;
+			jes = 0.01;
+			jesemf = 0.033;
+			jer = 0.0016;
+			trigger = 0.017;
+			pileup = 0.047;
+		break;
 		}
 		else {
 			throw runtime_error("Do not know systematic errors for the scalar mass!");
@@ -197,10 +197,10 @@ config parse_command_line(int argc, char **argv)
 		: 5000;
 	result.limit_settings.luminosity = args.IsSet("Luminosity")
 		? args.GetAsFloat("Luminosity")
-		: 3.2;
+		: 33.0;
 
 	// Systematic Errors
-	result.limit_settings.systematic_errors["lumi"] = 0.021; // Final lumi is 2.1%
+	result.limit_settings.systematic_errors["lumi"] = 0.022; // Final lumi is 2.1%
 
 	// Constant MC errors.
 	//result.limit_settings.systematic_errors["mc_ISRFSR"] = 0.02;
