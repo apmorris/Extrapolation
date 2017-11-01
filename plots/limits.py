@@ -68,8 +68,8 @@ tg_2s  = getTGraphAsymErrs(centralExp,plus2,minus2)
 tg_Exp = getTGraph(centralExp)
 #tg_Obs = getTGraph(centralObs)
 
-tg_2s.Draw("aC4")
-tg_1s.Draw("C4 same ")
+tg_2s.Draw("aC3")
+tg_1s.Draw("C3 same ")
 #tg_Obs.Draw("l same ")
 tg_Exp.Draw("l same ")
 
@@ -78,21 +78,20 @@ tg_Exp.SetLineWidth(2)
 #tg_Obs.SetLineStyle(1)
 #tg_Obs.SetLineWidth(2)
 
-tg_2s.SetMaximum(5e3)
-
 tg_2s.SetFillColor(r.kYellow)
 tg_1s.SetFillColor(r.kGreen-4)
 
-x_min = 1.0
+x_min = 0.001
 x_max = tg_2s.GetXaxis().GetXmax()
+y_max = 5e3
 
 mH = args.mH
 mS = args.mS
 
 if mH == "1000": 
-  if mS == "400": x_min = 0.4
+  if mS == "400": x_min = 0.1
   if mS == "150": x_min = 0.08
-  if mS == "50" : x_min = 0.05
+  if mS == "50" : x_min = 0.02
 if mH == "600":
   if mS == "150": x_min = 0.1
   if mS == "50" : x_min = 0.01
@@ -100,16 +99,27 @@ if mH == "400":
   if mS == "100": x_min = 0.05
   if mS == "50" : x_min = 0.01
 
-tg_2s.GetXaxis().SetLimits(x_min, x_max)
-tg_2s.SetMinimum(y_min)
+tg_2s.GetXaxis().SetLimits(x_min+0.5*x_min, x_max)
+tg_1s.GetXaxis().SetLimits(x_min+0.5*x_min, x_max)
 
-tg_2s.GetXaxis().SetTitle('s proper decay length [m]')
-tg_2s.GetYaxis().SetTitle('95% CL Upper Limit on #sigma #times BR [pb]')
+tg_Exp.GetXaxis().SetLimits(x_min, x_max)
+tg_Exp.SetMinimum(y_min)
+tg_Exp.SetMaximum(y_max)
 
-tg_2s.Draw("aC4")
-tg_1s.Draw("C4 same ")
+tg_Exp.GetXaxis().SetTitle('s proper decay length [m]')
+tg_Exp.GetYaxis().SetTitle('95% CL Upper Limit on #sigma #times BR [pb]')
+
+#frame = canvas.DrawFrame(c_min,y_min,x_max,y_max)
+
+tg_Exp.Draw("al")
+tg_2s.Draw("C3 same ")
+tg_1s.Draw("C3 same ")
 #tg_Obs.Draw("l same ")
 tg_Exp.Draw("l same ")
+
+r.gPad.RangeAxis(x_min, y_min, x_max, y_max)
+r.gPad.RedrawAxis()
+canvas.Modified()
 
 r.gStyle.SetTextSize(0.05)
 r.ATLASLabel(0.5,0.85,"Work in Progress",1)
