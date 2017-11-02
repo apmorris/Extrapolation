@@ -25,7 +25,7 @@ parser.print_help()
 
 massPts = str(args.massPairs).split('.')
 hs = r.THStack("hs", "Lifetime [m]")
-color = [r.kOrange+7,r.kCyan,r.kMagenta,r.kSpring-1,r.kAzure+6,r.kBlack,r.kRed,r.kBlack,r.kBlack,r.kBlack]
+color = [r.kOrange+7,r.kCyan,r.kMagenta,r.kSpring-1,r.kBlue-9,r.kRed,r.kBlue,r.kViolet-7,r.kGreen+3,r.kBlack,r.kRed+3]
 
 #Set up the canvas
 #canvas = r.TCanvas('canvas', 'canvas', 2400, 1600)
@@ -41,7 +41,8 @@ for mass in massPts:
   mH = mass.split('mH')[1].split('_')[0]
   mS = mass.split('mS')[1]
   print "Efficiency for mH", mH, "and mS", mS, "being calculated"
-  filename = r.TFile(args.extrapPath + "/extrap_" + mass + "_lt5m_dv18.root")
+  if int(mH) < 399 : filename = r.TFile(args.extrapPath + "/extrap_" + mass + "_lt5m_dv18_sel2.root")
+  if int(mH) > 399 : filename = r.TFile(args.extrapPath + "/extrap_" + mass + "_lt5m_dv18_sel2.root")
   print "From file", filename
   histo = filename.Get('h_res_eff_A')
   print "Maximum is", histo.GetMaximum()
