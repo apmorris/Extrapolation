@@ -30,7 +30,7 @@ color = [r.kOrange+7,r.kCyan,r.kMagenta,r.kSpring-1,r.kAzure+6,r.kBlack,r.kRed,r
 #Set up the canvas
 #canvas = r.TCanvas('canvas', 'canvas', 2400, 1600)
 canvas = r.TCanvas('canvas', 'canvas', 1200, 800)
-hs.Draw()
+hs.Draw("nostack")
 
 r.gStyle.SetTextSize(0.05)
 r.ATLASLabel(0.19,0.88,"Work in Progress",1)
@@ -40,8 +40,11 @@ i=0
 for mass in massPts:
   mH = mass.split('mH')[1].split('_')[0]
   mS = mass.split('mS')[1]
-  filename = r.TFile(args.extrapPath + "/extrap_" + mass + "_lt5m_dv11.root")
+  print "Efficiency for mH", mH, "and mS", mS, "being calculated"
+  filename = r.TFile(args.extrapPath + "/extrap_" + mass + "_lt5m_dv18.root")
+  print "From file", filename
   histo = filename.Get('h_res_eff_A')
+  print "Maximum is", histo.GetMaximum()
   r.gROOT.cd()
   hnew = histo.Clone()
   hnew.SetLineColor(color[i])
@@ -50,10 +53,13 @@ for mass in massPts:
   r.myBoxTextDash(0.19,0.84-(0.03*i),0.02,r.kWhite,color[i],"#it{m_{#Phi}} = " + mH + " GeV, #it{m_{S}} = " + mS + " GeV",1)
   i+=1
 
-
+#hs.Draw("nostack")
 hs.Modified()
 hs.GetXaxis().SetTitle("Lifetime [m]")
 hs.GetYaxis().SetTitle("Global Efficiency")
+maximum = hs.GetMaximum("nostack")
+hs.SetMaximum(maximum*1.2)
+hs.Modified()
 canvas.SaveAs(args.outputName)
 
 
