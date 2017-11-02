@@ -279,3 +279,4 @@ ExtrapolateByBeta/ExtrapolateByBeta
 *.sh
 *.out
 */output
+*.e
