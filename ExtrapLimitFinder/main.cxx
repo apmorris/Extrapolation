@@ -62,7 +62,7 @@ void fill_sys_errors(int scalarMass, map<string, double> &errors, bool unofficia
 	case 400:
 		jes = 0.01;
 		jesemf = 0.033;
-		jer = 0.0016;
+		jer = 0.016;
 		trigger = 0.017;
 		pileup = 0.047;
 		break;
