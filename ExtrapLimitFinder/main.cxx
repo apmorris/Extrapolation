@@ -68,11 +68,28 @@ void fill_sys_errors(int scalarMass, map<string, double> &errors, bool unofficia
 		break;
 
 	case 600:
-		jes = 0.006;
-		jesemf = 0.01;
-		jer = 0.011;
-		trigger = 0.011;
-		pileup = 0.019;
+
+	  /* //halve
+	  jes = 0.003;
+	  jesemf = 0.005;
+	  jer = 0.0055;
+	  trigger = 0.0055;
+	  pileup = 0.0095;
+	  */
+	  //double
+	  jes = 0.012;
+          jesemf = 0.02;
+          jer = 0.022;
+          trigger = 0.022;
+          pileup = 0.038;
+	  
+	  /* //nominal
+	  jes = 0.006;
+	  jesemf = 0.01;
+	  jer = 0.011;
+	  trigger = 0.011;
+	  pileup = 0.019;
+	  */
 		break;
 
 	case 1000:
