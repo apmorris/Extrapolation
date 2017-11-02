@@ -81,8 +81,8 @@ l15tg_2s  = getTGraphAsymErrs(l15centralExp,l15plus2,l15minus2)
 l15tg_Exp = getTGraph(l15centralExp)
 l15tg_Obs = getTGraph(l15centralObs)
 
-tg_2s.Draw("aC4")
-tg_1s.Draw("C4 same ")
+tg_2s.Draw("aC3")
+tg_1s.Draw("C3 same ")
 #tg_Obs.Draw("l same ")
 tg_Exp.Draw("l same ")
 
@@ -96,8 +96,8 @@ tg_2s.SetMaximum(5e3)
 tg_2s.SetFillColor(r.kYellow)
 tg_1s.SetFillColor(r.kGreen-4)
 
-l15tg_2s.Draw("C4 same")
-l15tg_1s.Draw("C4 same ")
+l15tg_2s.Draw("C3 same")
+l15tg_1s.Draw("C3 same ")
 l15tg_Obs.Draw("l same ")
 l15tg_Exp.Draw("l same ")
 
