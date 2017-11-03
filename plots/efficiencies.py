@@ -41,7 +41,7 @@ for mass in massPts:
   mH = mass.split('mH')[1].split('_')[0]
   mS = mass.split('mS')[1]
   print "Efficiency for mH", mH, "and mS", mS, "being calculated"
-  if int(mH) < 399 : filename = r.TFile(args.extrapPath + "/extrap_" + mass + "_lt5m_dv18_sel2.root")
+  if int(mH) < 399 : filename = r.TFile(args.extrapPath + "/extrap_" + mass + "_lt5m_dv18_sel1.root")
   if int(mH) > 399 : filename = r.TFile(args.extrapPath + "/extrap_" + mass + "_lt5m_dv18_sel2.root")
   print "From file", filename
   histo = filename.Get('h_res_eff_A')
