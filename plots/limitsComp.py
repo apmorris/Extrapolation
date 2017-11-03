@@ -119,16 +119,16 @@ x_max = tg_2s.GetXaxis().GetXmax()
 mH = args.mH
 mS = args.mS
 
-if mH == "1000": 
-  if mS == "400": x_min = 0.4
-  if mS == "150": x_min = 0.08
-  if mS == "50" : x_min = 0.05
+if mH == "1000":
+  if mS == "400": x_min = 0.1
+  if mS == "150": x_min = 0.04
+  if mS == "50" : x_min = 0.04
 if mH == "600":
-  if mS == "150": x_min = 0.1
-  if mS == "50" : x_min = 0.01
+  if mS == "150": x_min = 0.08
+  if mS == "50" : x_min = 0.08
 if mH == "400":
-  if mS == "100": x_min = 0.05
-  if mS == "50" : x_min = 0.01
+  if mS == "100": x_min = 0.1
+  if mS == "50" : x_min = 0.04
 
 tg_2s.GetXaxis().SetLimits(x_min, x_max)
 tg_2s.SetMinimum(y_min)
