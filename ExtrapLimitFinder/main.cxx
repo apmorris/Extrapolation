@@ -60,22 +60,38 @@ void fill_sys_errors(int scalarMass, map<string, double> &errors, bool unofficia
 	double jes, jesemf, jer, trigger, pileup;
 	switch (scalarMass) {
 	case 400:
-		jes = 0.01;
-		jesemf = 0.033;
-		jer = 0.0016;
-		trigger = 0.017;
-		pileup = 0.047;
-		break;
+
+	  //halve
+	  jes = 0.005;
+	  jesemf = 0.0165;
+	  jer = 0.008;
+	  trigger = 0.0085;
+	  pileup = 0.0235;
+	  /*
+	  //double
+	  jes = 0.02;
+          jesemf = 0.066;
+          jer = 0.032;
+          trigger = 0.034;
+          pileup = 0.094;
+	  
+	  jes = 0.01;
+	  jesemf = 0.033;
+	  jer = 0.016;
+	  trigger = 0.017;
+	  pileup = 0.047;
+	  */
+	  break;
 
 	case 600:
 
-	  /* //halve
+	  //halve
 	  jes = 0.003;
 	  jesemf = 0.005;
 	  jer = 0.0055;
 	  trigger = 0.0055;
 	  pileup = 0.0095;
-	  */
+	  /*
 	  //double
 	  jes = 0.012;
           jesemf = 0.02;
@@ -83,22 +99,39 @@ void fill_sys_errors(int scalarMass, map<string, double> &errors, bool unofficia
           trigger = 0.022;
           pileup = 0.038;
 	  
-	  /* //nominal
+	  //nominal
 	  jes = 0.006;
 	  jesemf = 0.01;
 	  jer = 0.011;
 	  trigger = 0.011;
 	  pileup = 0.019;
 	  */
-		break;
+	  break;
 
 	case 1000:
-		jes = 0.009;
-		jesemf = 0.007;
-		jer = 0.01;
-		trigger = 0.007;
-		pileup = 0.027;
-		break;
+	  
+	  //halve
+	  jes = 0.0045;
+	  jesemf = 0.0035;
+	  jer = 0.005;
+	  trigger = 0.0035;
+	  pileup = 0.0135;
+	  /*
+	  //double
+	  jes = 0.018;
+          jesemf = 0.014;
+          jer = 0.02;
+          trigger = 0.014;
+          pileup = 0.054;
+	  
+	  //nominal
+	  jes = 0.009;
+	  jesemf = 0.007;
+	  jer = 0.01;
+	  trigger = 0.007;
+	  pileup = 0.027;
+	  */
+  	  break;
 
 	default:
 		if (unofficial) {
