@@ -3,10 +3,11 @@
 Extrapolating the final results between signal lifetimes. 
 
 #### Steps to run the code:
-1. Apply the selection to the signal samples using the GenerateROOTFiles2017.py script
-2. Run the lifetime extrapolation on these slimmed files, with ExtrapolateByBeta
-3. Calculate the extrapolated limits using ExtrapLimitFinder
-4. Make limit plots, scripts for this are in the plots directory
+1. Apply the selection to the signal samples using the `GenerateMCFiles/GenerateROOTFiles2017.py` script
+2. Run the lifetime extrapolation on these slimmed files, with `ExtrapolateByBeta`
+3. Plot the efficiency as a function of lifetime, using `plots/efficiencies.py`
+4. Calculate the extrapolated limits using `ExtrapLimitFinder`
+5. Make limit plots, with `plots/limits.py`
 
 ---
 
@@ -19,7 +20,9 @@ git clone https://github.com/apmorris/Extrapolation.git
 ### Set up (lxplus)
 
 ```bash
-. setuplxplus.sh
+setupATLAS
+lsetup "root 6.10.04-x86_64-slc6-gcc62-opt"
+lsetup git
 # Make sure local copy is up to date
 git pull
 ```
@@ -36,19 +39,21 @@ code to use.
 cd GenerateMCFiles/
 root -l CalRSelection2017.C+
 # Then to run
-python GenerateROOTFiles2017.py -s <SignalSampleFile> -o <OutputFile> -n <nEvents>
+python GenerateROOTFiles2017.py -s <SignalSampleFile> -o <OutputFile> -m <Selection> -n <nEvents>
 ```
 
 `-s` Path to the sample file which is to be slimmed
 
 `-o` Desired name of the slimmed file, usually slim_mH***_mS***_dv**.root
 
+`-m` Selection to use, set to 1 for low-mass samples and 2 for high-mass samples
+
 `-n` Number of events to process, for all events set to -1
 
 ---
 ## Run the lifetime extrapolation on the slimmed files
 
-The ExtrapolateByBeta code takes the slimmed file generated above, and performs an 
+The `ExtrapolateByBeta` code takes the slimmed file generated above, and performs an 
 extrapolation over lifetimes, resulting in another root file containing histograms.
 
 ```bash
@@ -72,9 +77,27 @@ This step takes ~3 hours to run for slimmed samples of ~390k events, so it's
 recommended to use a batch system, or a lot of patience.
 
 ---
+## Make the efficiency plots
+
+The pyROOT macro `efficiencies.py` reads all files containing the extrapolation results 
+matching a certain pattern in a directory, gets the h_res_eff_A histograms and automatically 
+plots them.
+
+```bash
+cd ../plots/
+python efficiencies.py -p <PathToFiles> -m <ChainOfMasses> -o <PlotName>
+```
+
+`-p` Path to the directory containing the extrapolation results, see previous step
+
+`-m` Full-stop separated list of mass points to consider, e.g. mH400_mS100.mH600_mS150.mH1000_mS150
+
+`-o` File name for output efficiency plot 
+
+---
 ## Calculate the extrapolated limits
 
-The ExtrapLimitFinder code takes the extrapolated lifetime root file from above, and 
+The `ExtrapLimitFinder` code takes the extrapolated lifetime root file from above, and 
 calculates the limits for the sample. The output is a collection of histograms which
 are used to make the final limit plots.
 
