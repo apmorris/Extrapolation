@@ -33,7 +33,7 @@ canvas = r.TCanvas('canvas', 'canvas', 1200, 800)
 hs.Draw("nostack")
 
 r.gStyle.SetTextSize(0.05)
-r.ATLASLabel(0.19,0.88,"Work in Progress",1)
+r.ATLASLabel(0.19,0.88,"Internal",1)
 r.gStyle.SetTextSize(0.025)
 
 i=0

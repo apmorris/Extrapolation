@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser(description='Slim MC file to use in extrapolati
 parser.add_argument('-s', '--sample', help='Sample to process, e.g. mH600_mS150_lt5m.root')
 parser.add_argument('-o', '--outfile', help='Name of output root file')
 parser.add_argument('-n', '--nevents', help='Number of events to process (default -1)', default='-1', type=int)
-parser.add_argument('-m', '--mH', help='Boson mass, defines which selection to use', type=int)
+parser.add_argument('-m', '--selection', help='Selection to use, 1 or 2', type=int)
 args = parser.parse_args()
 parser.print_help()
 
@@ -119,12 +119,12 @@ for ev in tree:
                 n_logRatio+=1
                 if(ev.CalibJet_pT[ev.BDT3weights_signal_cleanJet_index[0]] > 100):
                   n_pT_sel1+=1
-                  if(args.mH<300): isSelected = True
+                  if(args.selection==1): isSelected = True
                   if(ev.event_sumMinDR>1.5 and ev.eventBDT_value > 0.1):
                     n_RegionA_sel1+=1
                 if(ev.CalibJet_pT[ev.BDT3weights_signal_cleanJet_index[0]] > 160):
                   n_pT_sel2+=1
-                  if(args.mH>399): isSelected = True
+                  if(args.selection==2): isSelected = True
                   if(ev.event_sumMinDR>1.5 and ev.eventBDT_value > 0.1):
                     n_RegionA_sel2+=1
   
