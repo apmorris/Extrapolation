@@ -59,29 +59,45 @@ void fill_sys_errors(int scalarMass, map<string, double> &errors, bool unofficia
 {
 	double jes, jesemf, jer, trigger, pileup;
 	switch (scalarMass) {
+	case 125:
+	  jes = 0.1;
+	  jesemf = 0.1;
+	  jer = 0.1;
+	  trigger = 0.1;
+	  pileup = 0.1;
+	  break;
+
+	case 200:
+	  jes = 0.1;
+	  jesemf = 0.1;
+	  jer = 0.1;
+	  trigger = 0.1;
+	  pileup = 0.1;
+	  break; 
+
 	case 400:
-		jes = 0.01;
-		jesemf = 0.033;
-		jer = 0.016;
-		trigger = 0.017;
-		pileup = 0.047;
-		break;
+	  jes = 0.01;
+	  jesemf = 0.033;
+	  jer = 0.016;
+	  trigger = 0.017;
+	  pileup = 0.047;
+	  break;
 
 	case 600:
-		jes = 0.006;
-		jesemf = 0.01;
-		jer = 0.011;
-		trigger = 0.011;
-		pileup = 0.019;
-		break;
+	  jes = 0.006;
+	  jesemf = 0.01;
+	  jer = 0.011;
+	  trigger = 0.011;
+	  pileup = 0.019;
+	  break;
 
 	case 1000:
-		jes = 0.009;
-		jesemf = 0.007;
-		jer = 0.01;
-		trigger = 0.007;
-		pileup = 0.027;
-		break;
+	  jes = 0.009;
+	  jesemf = 0.007;
+	  jer = 0.01;
+	  trigger = 0.007;
+	  pileup = 0.027;
+	  break;
 
 	default:
 		if (unofficial) {
@@ -232,8 +248,8 @@ config parse_command_line(int argc, char **argv)
 		if (!args.IsSet("Unofficial")) {
 			throw runtime_error("Unable to determine the scalar mass from the input file " + result.extrapolate_filename);
 		}
-		cout << "**** -> Setting scalar mass to 600.0" << endl;
-		scalarMass = 600;
+		cout << "**** -> Setting scalar mass to 400.0" << endl;
+		scalarMass = 400;
 	}
 
 	fill_sys_errors(scalarMass, result.limit_settings.systematic_errors);
