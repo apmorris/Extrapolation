@@ -87,21 +87,21 @@ tg_1s.SetFillColor(r.kGreen-4)
 
 x_min = 0.001
 x_max = tg_2s.GetXaxis().GetXmax()
-y_max = 5e3
+y_max = 8e3
 
 mH = args.mH
 mS = args.mS
 
 if mH == "1000": 
-  if mS == "400": x_min = 0.1
-  if mS == "150": x_min = 0.04
-  if mS == "50" : x_min = 0.04
+  if mS == "400": x_min = 0.2
+  if mS == "150": x_min = 0.01
+  if mS == "50" : x_min = 0.015
 if mH == "600":
-  if mS == "150": x_min = 0.08
-  if mS == "50" : x_min = 0.08
-if mH == "400":
-  if mS == "100": x_min = 0.1
+  if mS == "150": x_min = 0.15
   if mS == "50" : x_min = 0.04
+if mH == "400":
+  if mS == "100": x_min = 0.01
+  if mS == "50" : x_min = 0.015
 
 tg_2s.GetXaxis().SetLimits(x_min+0.5*x_min, x_max)
 tg_1s.GetXaxis().SetLimits(x_min+0.5*x_min, x_max)
@@ -126,7 +126,7 @@ r.gPad.RedrawAxis()
 canvas.Modified()
 
 r.gStyle.SetTextSize(0.05)
-r.ATLASLabel(0.5,0.85,"Work in Progress",1)
+r.ATLASLabel(0.5,0.85,"Internal",1)
 r.gStyle.SetTextSize(0.035)
 r.myText(0.5,0.8,1,"m_{H} = "+args.mH+" GeV, m_{s} = "+args.mS+" GeV, Selection "+args.selection)
 r.myText(0.5,0.76,1,"33.0 fb^{-1}  #it{#sqrt{s}} = 13 TeV")
