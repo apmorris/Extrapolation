@@ -102,6 +102,12 @@ if mH == "600":
 if mH == "400":
   if mS == "100": x_min = 0.01
   if mS == "50" : x_min = 0.015
+if mH == "200":
+  if mS == "50" : x_min = 0.1
+  if mS == "25" : x_min = 0.1
+if mH == "125":
+  if mS == "40" : x_min = 0.2
+  if mS == "25" : x_min = 0.2
 
 tg_2s.GetXaxis().SetLimits(x_min+0.5*x_min, x_max)
 tg_1s.GetXaxis().SetLimits(x_min+0.5*x_min, x_max)
