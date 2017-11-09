@@ -68,13 +68,13 @@ for mass in massPts:
   extrapolation = r.TGraph(1,ex,ey)
   extrapolation.SetLineColor(r.kAzure-3)
   extrapolation.SetMarkerColor(r.kAzure-3)
-  extrapolation.SetMarkerStyle(22)
-  extrapolation.SetMarkerSize(2.5)
+  extrapolation.SetMarkerStyle(23)
+  extrapolation.SetMarkerSize(2)
   extrapolation.Draw("p same")
   r.myText(0.19,0.83,1,"#it{m_{H}} = "+mH+" GeV, #it{m_{s}} = "+mS+" GeV")
   r.myBoxTextDash(0.19,0.79,0.03,r.kWhite,color[i]," Extrapolation",1)
   r.myMarkerText(0.23,0.75,r.kMagenta-3,33,"LF = 5m",2.5);
-  r.myMarkerText(0.23,0.71,r.kAzure-3,22,"LF = 9m",2.5);
+  r.myMarkerText(0.23,0.71,r.kAzure-3,23,"LF = 9m",2);
   i+=1
 
 #hs.Draw("nostack")
