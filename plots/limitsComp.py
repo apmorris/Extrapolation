@@ -120,15 +120,16 @@ mH = args.mH
 mS = args.mS
 
 if mH == "1000":
-  if mS == "400": x_min = 0.1
-  if mS == "150": x_min = 0.04
-  if mS == "50" : x_min = 0.04
+  if mS == "400": x_min = 0.2
+  if mS == "150": x_min = 0.01
+  if mS == "50" : x_min = 0.015
 if mH == "600":
-  if mS == "150": x_min = 0.08
-  if mS == "50" : x_min = 0.08
-if mH == "400":
-  if mS == "100": x_min = 0.1
+  if mS == "150": x_min = 0.15
   if mS == "50" : x_min = 0.04
+if mH == "400":
+  if mS == "100": x_min = 0.03
+  if mS == "50" : x_min = 0.015
+
 
 tg_2s.GetXaxis().SetLimits(x_min, x_max)
 tg_2s.SetMinimum(y_min)
@@ -148,7 +149,7 @@ l15tg_Exp.Draw("l same ")
 
 
 r.gStyle.SetTextSize(0.05)
-r.ATLASLabel(0.35,0.89,"Work in Progress",1)
+r.ATLASLabel(0.35,0.89,"Internal",1)
 r.gStyle.SetTextSize(0.035)
 r.myText(0.35,0.85,1,"m_{H} = "+args.mH+" GeV, m_{s} = "+args.mS+" GeV")
 r.myText(0.65,0.81,1,"#bf{2016}  33.0 fb^{-1}  #it{#sqrt{s}} = 13 TeV")
