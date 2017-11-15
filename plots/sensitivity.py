@@ -73,21 +73,21 @@ file80      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + 
 file60      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_60' + args.variation + '.root')
 file40      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_40' + args.variation + '.root')
 file20      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_20' + args.variation + '.root')
-file0       = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_0' + args.variation + '.root')
 
 #Set up the canvas
 canvas = r.TCanvas('canvas', 'canvas', 1200, 800)
 #canvas = r.TCanvas('canvas', 'canvas', 2400, 1600)
 
-files = [file0, file20, file40, file60, file80, nominalFile, file120, file140, file160, file180, file200]
-errorVals = [0*args.error, 0.2*args.error, 0.4*args.error, 0.6*args.error, 0.8*args.error, args.error, 1.2*args.error, 1.4*args.error, 1.6*args.error, 1.8*args.error, 2*args.error]
+files = [file20, file40, file60, file80, nominalFile, file120, file140, file160, file180, file200]
+errorVals = [0.2*args.error, 0.4*args.error, 0.6*args.error, 0.8*args.error, args.error, 1.2*args.error, 1.4*args.error, 1.6*args.error, 1.8*args.error, 2*args.error]
 plus2Val = []
 minus2Val = []
 graph1 = r.TGraphAsymmErrors()
 graph2 = r.TGraphAsymmErrors()
+graphNom1 = r.TGraphAsymmErrors()
+graphNom2 = r.TGraphAsymmErrors()
 
-for i in range(0,len(errorVals)-1):
-  print i
+for i in range(0,len(errorVals)):
   histLimit = files[i].Get('xsec_BR_95CL')
   histPlus1 = files[i].Get('xsec_BR_events__p1')
   histMinus1 = files[i].Get('xsec_BR_events__n1')
@@ -99,41 +99,58 @@ for i in range(0,len(errorVals)-1):
   plus2Val.append(histPlus2.GetBinContent(ibin))
   minus1Val=histMinus1.GetBinContent(ibin)
   minus2Val.append(histMinus2.GetBinContent(ibin))
+  if (errorVals[i] == args.error):
+      graphNom1.SetPoint(0,errorVals[i],limitVal)
+      graphNom1.SetPointEYhigh(0,plus1Val-limitVal)
+      graphNom1.SetPointEYlow(0,limitVal-minus1Val)
+      graphNom2.SetPoint(0,errorVals[i],limitVal)
+      graphNom2.SetPointEYhigh(0,plus2Val[i]-limitVal)
+      graphNom2.SetPointEYlow(0,limitVal-minus2Val[i])
   graph1.SetPoint(i,errorVals[i],limitVal)
-  graph1.SetPointEYhigh(i,abs(limitVal-plus1Val))
-  graph1.SetPointEYlow(i,abs(limitVal-minus1Val))
+  graph1.SetPointEYhigh(i,plus1Val-limitVal)
+  graph1.SetPointEYlow(i,limitVal-minus1Val)
   graph2.SetPoint(i,errorVals[i],limitVal)
-  graph2.SetPointEYhigh(i,abs(limitVal-plus2Val[i]))
-  graph2.SetPointEYlow(i,abs(limitVal-minus2Val[i]))
+  graph2.SetPointEYhigh(i,plus2Val[i]-limitVal)
+  graph2.SetPointEYlow(i,limitVal-minus2Val[i])
 
-graph1.Draw("A""P")
-graph2.Draw("[]")
-graph2.SetMarkerSize(20)
+graph2.Draw("A P []")
+graph1.Draw("P")
+graphNom1.Draw("P")
+graphNom2.Draw("[]")
+
+graphNom1.SetMarkerColor(r.kBlue)
+graphNom1.SetLineColor(r.kBlue)
+graphNom2.SetMarkerColor(r.kBlue)
+graphNom2.SetLineColor(r.kBlue)
 
 xmin = 0
 xmax = args.error*2.1
 ydiffmax= max(plus2Val)-min(minus2Val)
-print ydiffmax
 
-graph1.SetMinimum(min(minus2Val) - ydiffmax/6.)
-graph1.SetMaximum(max(plus2Val) + ydiffmax/2.)
-graph1.GetXaxis().SetLimits(xmin,xmax)
 
-if args.variation == "MC": graph1.GetXaxis().SetTitle('Combined MC systematic')
-if args.variation == "ABCD": graph1.GetXaxis().SetTitle('ABCD systematic')
+graph2.SetMinimum(min(minus2Val) - ydiffmax/6.)
+graph2.SetMaximum(max(plus2Val) + ydiffmax/1.5)
+graph2.GetXaxis().SetLimits(xmin,xmax)
 
-graph1.GetYaxis().SetTitle('95% CL Upper Limit on #sigma #times BR [pb]')
+if args.variation == "MC": graph2.GetXaxis().SetTitle('Combined MC systematic')
+if args.variation == "ABCD": graph2.GetXaxis().SetTitle('ABCD systematic')
 
-graph1.Draw("A""P")
-graph2.Draw("[]")
+graph2.GetYaxis().SetTitle('95% CL Upper Limit on #sigma #times BR [pb]')
+
+graph2.Draw("A P []")
+graph1.Draw("P")
+graphNom1.Draw("P")
+graphNom2.Draw("[]")
+
+err = args.error*100
+percent = str("%.3f" % err)
 
 r.gStyle.SetTextSize(0.05)
 r.ATLASLabel(0.2,0.87,"Internal",1)
-r.gStyle.SetTextSize(0.025)
-r.myText(0.2,0.83,1,"Sensitivity to "+args.variation+" systematic, m_{H} = "+args.mH+" GeV, m_{s} = "+args.mS+" GeV")
-r.myText(0.2,0.8,1,"Nominal error = "+str(args.error)+", c#tau = "+str(args.ctau)+" m")
-#r.myMarkerText(0.23,0.77,r.kGreen+2,20,"Doubled systematic",1)
-#r.myMarkerText(0.23,0.74,r.kBlack,20,"Nominal systematic",1)
-#r.myMarkerText(0.23,0.71,r.kRed+2,20,"Halved systematic",1)
+r.gStyle.SetTextSize(0.035)
+r.myText(0.2,0.83,1,"m_{H} = "+args.mH+" GeV, m_{s} = "+args.mS+" GeV, c#tau = "+str(args.ctau)+" m")
+r.myText(0.2,0.79,1,"Nominal "+args.variation+" systematic = "+percent+"%")
+r.myMarkerText(0.23,0.76,r.kBlue,20,"Nominal",1)
+r.myMarkerText(0.23,0.72,r.kBlack,20,"Variations",1)
 
 canvas.SaveAs(args.plotName)
