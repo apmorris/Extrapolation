@@ -68,7 +68,7 @@ file180     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + 
 file160     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_160' + args.variation + '.root')
 file140     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_140' + args.variation + '.root')
 file120     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_120' + args.variation + '.root')
-nominalFile = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_nominal.root')
+nominalFile = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_100' + args.variation + '.root')
 file80      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_80' + args.variation + '.root')
 file60      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_60' + args.variation + '.root')
 file40      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_40' + args.variation + '.root')
@@ -143,7 +143,8 @@ graphNom1.Draw("P")
 graphNom2.Draw("[]")
 
 err = args.error*100
-percent = str("%.3f" % err)
+if (args.variation == "MC"): percent = str("%.3f" % err)
+if (args.variation == "ABCD"): percent = str("%.1f" % err)
 
 r.gStyle.SetTextSize(0.05)
 r.ATLASLabel(0.2,0.87,"Internal",1)
