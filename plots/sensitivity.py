@@ -63,101 +63,77 @@ def getTGraph(hist):
   return result
 
 #Open the files
+file200     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_200' + args.variation + '.root')
+file180     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_180' + args.variation + '.root')
+file160     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_160' + args.variation + '.root')
+file140     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_140' + args.variation + '.root')
+file120     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_120' + args.variation + '.root')
 nominalFile = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_nominal.root')
-upFile = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_double' + args.variation + '.root')
-downFile = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_halve' + args.variation + '.root')
+file80      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_80' + args.variation + '.root')
+file60      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_60' + args.variation + '.root')
+file40      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_40' + args.variation + '.root')
+file20      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_20' + args.variation + '.root')
+file0       = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_0' + args.variation + '.root')
 
 #Set up the canvas
 canvas = r.TCanvas('canvas', 'canvas', 1200, 800)
 #canvas = r.TCanvas('canvas', 'canvas', 2400, 1600)
 
-# Get histograms
-centralExp = nominalFile.Get('xsec_BR_95CL')
-plus1      = nominalFile.Get('xsec_BR_events__p1')
-minus1     = nominalFile.Get('xsec_BR_events__n1')
-plus2      = nominalFile.Get('xsec_BR_events__p2')
-minus2     = nominalFile.Get('xsec_BR_events__n2')
+files = [file0, file20, file40, file60, file80, nominalFile, file120, file140, file160, file180, file200]
+errorVals = [0*args.error, 0.2*args.error, 0.4*args.error, 0.6*args.error, 0.8*args.error, args.error, 1.2*args.error, 1.4*args.error, 1.6*args.error, 1.8*args.error, 2*args.error]
+plus2Val = []
+minus2Val = []
+graph1 = r.TGraphAsymmErrors()
+graph2 = r.TGraphAsymmErrors()
 
-up_centralExp = upFile.Get('xsec_BR_95CL')
-up_plus1      = upFile.Get('xsec_BR_events__p1')
-up_minus1     = upFile.Get('xsec_BR_events__n1')
-up_plus2      = upFile.Get('xsec_BR_events__p2')
-up_minus2     = upFile.Get('xsec_BR_events__n2')
+for i in range(0,len(errorVals)-1):
+  print i
+  histLimit = files[i].Get('xsec_BR_95CL')
+  histPlus1 = files[i].Get('xsec_BR_events__p1')
+  histMinus1 = files[i].Get('xsec_BR_events__n1')
+  histPlus2 = files[i].Get('xsec_BR_events__p2')
+  histMinus2 = files[i].Get('xsec_BR_events__n2')
+  ibin = histLimit.FindBin(args.ctau)
+  limitVal=histLimit.GetBinContent(ibin)
+  plus1Val=histPlus1.GetBinContent(ibin)
+  plus2Val.append(histPlus2.GetBinContent(ibin))
+  minus1Val=histMinus1.GetBinContent(ibin)
+  minus2Val.append(histMinus2.GetBinContent(ibin))
+  graph1.SetPoint(i,errorVals[i],limitVal)
+  graph1.SetPointEYhigh(i,abs(limitVal-plus1Val))
+  graph1.SetPointEYlow(i,abs(limitVal-minus1Val))
+  graph2.SetPoint(i,errorVals[i],limitVal)
+  graph2.SetPointEYhigh(i,abs(limitVal-plus2Val[i]))
+  graph2.SetPointEYlow(i,abs(limitVal-minus2Val[i]))
 
-down_centralExp = downFile.Get('xsec_BR_95CL')
-down_plus1      = downFile.Get('xsec_BR_events__p1')
-down_minus1     = downFile.Get('xsec_BR_events__n1')
-down_plus2      = downFile.Get('xsec_BR_events__p2')
-down_minus2     = downFile.Get('xsec_BR_events__n2')
+graph1.Draw("A""P")
+graph2.Draw("[]")
+graph2.SetMarkerSize(20)
 
-g_nom = getTGraphPoint(centralExp, plus1, minus1, args.ctau, args.error)
-g_up = getTGraphPoint(up_centralExp, up_plus1, up_minus1, args.ctau, args.error*2)
-g_down = getTGraphPoint(down_centralExp, down_plus1, down_minus1, args.ctau, args.error*0.5)
-g_nom2 = getTGraphPoint(centralExp, plus2, minus2, args.ctau, args.error)
-g_up2 = getTGraphPoint(up_centralExp, up_plus2, up_minus2, args.ctau, args.error*2)
-g_down2 = getTGraphPoint(down_centralExp, down_plus2, down_minus2, args.ctau, args.error*0.5)
+xmin = 0
+xmax = args.error*2.1
+ydiffmax= max(plus2Val)-min(minus2Val)
+print ydiffmax
 
-g_up.Draw("A""P")
-g_nom.Draw("P")
-g_down.Draw("P")
-g_nom2.Draw("[]")
-g_up2.Draw("[]")
-g_down2.Draw("[]")
+graph1.SetMinimum(min(minus2Val) - ydiffmax/6.)
+graph1.SetMaximum(max(plus2Val) + ydiffmax/2.)
+graph1.GetXaxis().SetLimits(xmin,xmax)
 
-g_up.SetLineColor(r.kGreen+2)
-g_up.SetMarkerColor(r.kGreen+2)
-g_up2.SetLineColor(r.kGreen+2)
-g_up2.SetMarkerColor(r.kGreen+2)
-g_up2.SetMarkerSize(20)
+if args.variation == "MC": graph1.GetXaxis().SetTitle('Combined MC systematic')
+if args.variation == "ABCD": graph1.GetXaxis().SetTitle('ABCD systematic')
 
-g_down.SetLineColor(r.kRed+2)
-g_down.SetMarkerColor(r.kRed+2)
-g_down2.SetLineColor(r.kRed+2)
-g_down2.SetMarkerColor(r.kRed+2)
-g_down2.SetMarkerSize(20)
+graph1.GetYaxis().SetTitle('95% CL Upper Limit on #sigma #times BR [pb]')
 
-g_nom2.SetMarkerSize(20)
-
-xmin = args.error*0.125
-xmax = args.error*2.375
-
-ibin = centralExp.FindBin(args.ctau)
-y_nom2=centralExp.GetBinContent(ibin)
-y_up2=up_centralExp.GetBinContent(ibin)
-y_down2=down_centralExp.GetBinContent(ibin)
-yvals = [y_nom2-g_nom2.GetErrorYlow(0),y_nom2+g_nom2.GetErrorYhigh(0),y_up2-g_up2.GetErrorYlow(0),y_up2+g_up2.GetErrorYhigh(0),y_down2-g_down2.GetErrorYlow(0),y_down2+g_down2.GetErrorYhigh(0)]
-print yvals
-
-ydiff= max(yvals)-min(yvals)
-print ydiff
-
-ymin = min(yvals)-ydiff/6.
-ymax = max(yvals)+ydiff/2.
-print ymin, ymax
-
-g_up.SetMinimum(ymin)
-g_up.SetMaximum(ymax)
-g_up.GetXaxis().SetLimits(xmin,xmax)
-
-if args.variation == "MC": g_up.GetXaxis().SetTitle('Combined MC systematic')
-if args.variation == "ABCD": g_up.GetXaxis().SetTitle('ABCD systematic')
-
-g_up.GetYaxis().SetTitle('95% CL Upper Limit on #sigma #times BR [pb]')
-
-g_up.Draw("A""P")
-g_nom.Draw("P")
-g_down.Draw("P")
-g_nom2.Draw("[]")
-g_up2.Draw("[]")
-g_down2.Draw("[]")
+graph1.Draw("A""P")
+graph2.Draw("[]")
 
 r.gStyle.SetTextSize(0.05)
 r.ATLASLabel(0.2,0.87,"Internal",1)
 r.gStyle.SetTextSize(0.025)
-r.myText(0.2,0.83,1,"Sensitivity to "+args.variation+" systematic for")
-r.myText(0.2,0.8,1,"m_{H} = "+args.mH+" GeV, m_{s} = "+args.mS+" GeV, c#tau = "+str(args.ctau)+" m")
-r.myMarkerText(0.23,0.77,r.kGreen+2,20,"Doubled systematic",1)
-r.myMarkerText(0.23,0.74,r.kBlack,20,"Nominal systematic",1)
-r.myMarkerText(0.23,0.71,r.kRed+2,20,"Halved systematic",1)
+r.myText(0.2,0.83,1,"Sensitivity to "+args.variation+" systematic, m_{H} = "+args.mH+" GeV, m_{s} = "+args.mS+" GeV")
+r.myText(0.2,0.8,1,"Nominal error = "+str(args.error)+", c#tau = "+str(args.ctau)+" m")
+#r.myMarkerText(0.23,0.77,r.kGreen+2,20,"Doubled systematic",1)
+#r.myMarkerText(0.23,0.74,r.kBlack,20,"Nominal systematic",1)
+#r.myMarkerText(0.23,0.71,r.kRed+2,20,"Halved systematic",1)
 
 canvas.SaveAs(args.plotName)
