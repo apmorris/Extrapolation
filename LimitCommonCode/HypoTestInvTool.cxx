@@ -226,6 +226,7 @@ HypoTestInvTool::AnalyzeResult(HypoTestInverterResult * r,
 
 	//plot->Draw("CLb 2CL");  // plot all and Clb
 	//plot->Draw("EXP");  // plot all and Clb
+	gROOT->SetBatch(1);
 	plot->Draw("");  // plot all and Clb
 	c1->SaveAs("brasilianFlag.pdf");
 	c1->SaveAs("brasilianFlag.C");

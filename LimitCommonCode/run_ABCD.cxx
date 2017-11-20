@@ -616,8 +616,8 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	//              = 6 Number of observed event as test statistic
 
 	Double_t par_poi_min = 0.0;   // mu scanned from par_poi_min to par_poi_max with par_npointscan steps
-	Double_t par_poi_max = 0.01;
-	Int_t    par_npointscan = 500; // default: 100
+	Double_t par_poi_max = 1.0; // 0.01 default
+	Int_t    par_npointscan = 10000; // default: 100
 
 	auto score = StandardHypoTestInvDemo(0, "", out_filename, "wspace", "mc", "mc", "obsData", calculationType, testStatType, true, par_npointscan, par_poi_min, par_poi_max, par_ntoys);
 
