@@ -68,7 +68,7 @@ file180     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + 
 file160     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_160' + args.variation + '.root')
 file140     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_140' + args.variation + '.root')
 file120     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_120' + args.variation + '.root')
-nominalFile = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_100' + args.variation + '.root')
+nominalFile = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_nominal.root')
 file80      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_80' + args.variation + '.root')
 file60      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_60' + args.variation + '.root')
 file40      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_40' + args.variation + '.root')
@@ -126,6 +126,8 @@ graphNom2.SetLineColor(r.kBlue)
 xmin = 0
 xmax = args.error*2.1
 ydiffmax= max(plus2Val)-min(minus2Val)
+
+print plus2Val
 
 
 graph2.SetMinimum(min(minus2Val) - ydiffmax/6.)
