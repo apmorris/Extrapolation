@@ -374,7 +374,7 @@ HypoTestInvTool::LimitResults simultaneousABCD(const Double_t n[4], const Double
 	wspace->factory("ND[0,20000]");
 
 	// POI
-	wspace->factory(TString::Format("mu[%f,0,1]", mu_guess));  // mu = NsA/Ns0 (Ns0 = expected events)
+	wspace->factory(TString::Format("mu[%f,0,5]", mu_guess));  // mu = NsA/Ns0 (Ns0 = expected events)
 	//note: SM means mu=0 (used for the BG only hypotesis for the expected limit
 
 	// pdf parameters
