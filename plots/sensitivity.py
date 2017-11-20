@@ -9,7 +9,7 @@ r.gROOT.LoadMacro('atlasstyle-00-04-02/AtlasUtils.C')
 r.gROOT.LoadMacro('atlasstyle-00-04-02/AtlasLabels.C')
 r.SetAtlasStyle()
 r.gROOT.SetBatch(1)
-#r.gStyle.SetOptLogy(1)
+r.gStyle.SetOptLogy(1)
 #r.gStyle.SetOptLogx(1)
 r.gStyle.SetLineWidth(2)
 r.gStyle.SetEndErrorSize(4)
@@ -68,11 +68,11 @@ file180     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + 
 file160     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_160' + args.variation + '.root')
 file140     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_140' + args.variation + '.root')
 file120     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_120' + args.variation + '.root')
-nominalFile = r.TFile.Open(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_nominal.root')
+nominalFile = r.TFile.Open(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_100' + args.variation + '.root')
 if (nominalFile): 
-  print "Nominal file has suffix _nominal.root"
+  print "Nominal file doesn't have suffix _nominal.root"
 else: 
-  nominalFile = r.TFile.Open(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_100' + args.variation + '.root')
+  nominalFile = r.TFile.Open(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_nominal.root')
 file80      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_80' + args.variation + '.root')
 file60      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_60' + args.variation + '.root')
 file40      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_40' + args.variation + '.root')
