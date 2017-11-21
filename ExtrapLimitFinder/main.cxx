@@ -166,6 +166,7 @@ config parse_command_line(int argc, char **argv)
 
 		Arg("Luminosity", "L", "Lumi, in fb, for this dataset", Is::Optional),
 		Arg("ABCDError", "E", "Error on the ABCD component", Is::Optional),
+		Arg("MCErrorScale", "M", "Factor to scale the MC error by", Is::Optional),
 
 		// Output options
 		Arg("OutputFile", "f", "Name of output root file for limit results. By default based on input filename", Is::Optional),
@@ -252,8 +253,12 @@ config parse_command_line(int argc, char **argv)
 		scalarMass = 400;
 	}
 
+	auto mcScale = args.IsSet("MCErrorScale")
+	  ? args.GetAsFloat("MCErrorScale")
+	  : 1.0;
+
 	fill_sys_errors(scalarMass, result.limit_settings.systematic_errors);
-	result.limit_settings.systematic_errors["mc_eff"] = budle_errors("mc_", result.limit_settings.systematic_errors);
+	result.limit_settings.systematic_errors["mc_eff"] = budle_errors("mc_", result.limit_settings.systematic_errors)*mcScale;
 
 	// Finally, dump them.
 	dump_errors(result.limit_settings.systematic_errors);

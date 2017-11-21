@@ -22,61 +22,26 @@ parser.add_argument('-H', '--mH', help='Mass of heavy boson (GeV)')
 parser.add_argument('-S', '--mS', help='Mass of scalar (GeV)')
 parser.add_argument('-c', '--ctau', help='Generated ctau for sample', type=float)
 parser.add_argument('-e', '--error', help='Nominal error value', type=float)
-parser.add_argument('-x', '--dimensions', help='Ranges for axes (xmin,xmax,ymin,ymax)')
-parser.add_argument('-p', '--plotName', help='File name for output limit plot')
+parser.add_argument('-p', '--plotName', help='File name suffix for output plot')
+parser.add_argument('-D', '--date', help='Date suffixed to files')
 args = parser.parse_args()
 parser.print_help()
 
-#Method to get TGraphAsymmErrors from TH1's
-def getTGraphAsymErrs(nominalHist,upHist,dnHist):
-  result = r.TGraphAsymmErrors()
-  for ibin in range(0,nominalHist.GetNbinsX()+1):
-     nominalY=nominalHist.GetBinContent(ibin)
-     nominalX=nominalHist.GetBinCenter(ibin)
-     XErr=nominalHist.GetBinWidth(ibin)/2.
-     YErrUp=upHist.GetBinContent(ibin)
-     YErrDn=dnHist.GetBinContent(ibin)
-     result.SetPoint(ibin,nominalX,nominalY)
-     result.SetPointEYhigh(ibin,abs(nominalY-YErrUp))
-     result.SetPointEYlow(ibin,abs(nominalY-YErrDn))
-     result.SetPointEXlow(ibin,XErr)
-     result.SetPointEXhigh(ibin,XErr)
-  return result
-
-def getTGraphPoint(nominalHist,upHist,dnHist,xval,errval):
-  result = r.TGraphAsymmErrors()
-  ibin = nominalHist.FindBin(xval)
-  nominalY=nominalHist.GetBinContent(ibin)
-  YErrUp=upHist.GetBinContent(ibin)
-  YErrDn=dnHist.GetBinContent(ibin)
-  result.SetPoint(0,errval,nominalY)
-  result.SetPointEYhigh(0,abs(nominalY-YErrUp))
-  result.SetPointEYlow(0,abs(nominalY-YErrDn))
-  return result
-
-def getTGraph(hist):
-  result = r.TGraph()
-  for ibin in range(0,hist.GetNbinsX()+1):
-    histY=hist.GetBinContent(ibin)
-    histX=hist.GetBinCenter(ibin)
-    result.SetPoint(ibin,histX,histY)
-  return result
-
 #Open the files
-file200     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_200' + args.variation + '.root')
-file180     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_180' + args.variation + '.root')
-file160     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_160' + args.variation + '.root')
-file140     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_140' + args.variation + '.root')
-file120     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_120' + args.variation + '.root')
-nominalFile = r.TFile.Open(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_100' + args.variation + '.root')
+file200     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_200' + args.variation + '_' + args.date + '.root')
+file180     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_180' + args.variation + '_' + args.date + '.root')
+file160     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_160' + args.variation + '_' + args.date + '.root')
+file140     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_140' + args.variation + '_' + args.date + '.root')
+file120     = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_120' + args.variation + '_' + args.date + '.root')
+nominalFile = r.TFile.Open(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_100' + args.variation + '_' + args.date + '.root')
 if (nominalFile): 
-  print "Nominal file doesn't have suffix _nominal.root"
+  print nominalFile
 else: 
   nominalFile = r.TFile.Open(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_nominal.root')
-file80      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_80' + args.variation + '.root')
-file60      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_60' + args.variation + '.root')
-file40      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_40' + args.variation + '.root')
-file20      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_20' + args.variation + '.root')
+file80      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_80' + args.variation + '_' + args.date + '.root')
+file60      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_60' + args.variation + '_' + args.date + '.root')
+file40      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_40' + args.variation + '_' + args.date + '.root')
+file20      = r.TFile(args.directory + 'limit_mH' + args.mH + '_mS' + args.mS + '_lt5m_dv18_20' + args.variation + '_' + args.date + '.root')
 
 #Set up the canvas
 canvas = r.TCanvas('canvas', 'canvas', 1200, 800)
@@ -117,10 +82,10 @@ for i in range(0,len(errorVals)):
   graph2.SetPointEYhigh(i,plus2Val[i]-limitVal)
   graph2.SetPointEYlow(i,limitVal-minus2Val[i])
 
-graph2.Draw("A P []")
-graph1.Draw("P")
-graphNom1.Draw("P")
-graphNom2.Draw("[]")
+graph2.Draw('A P []')
+graph1.Draw('P')
+graphNom1.Draw('P')
+graphNom2.Draw('[]')
 
 graphNom1.SetMarkerColor(r.kBlue)
 graphNom1.SetLineColor(r.kBlue)
@@ -138,26 +103,65 @@ graph2.SetMinimum(min(minus2Val) - ydiffmax/6.)
 graph2.SetMaximum(max(plus2Val) + ydiffmax/1.5)
 graph2.GetXaxis().SetLimits(xmin,xmax)
 
-if args.variation == "MC": graph2.GetXaxis().SetTitle('Combined MC systematic')
-if args.variation == "ABCD": graph2.GetXaxis().SetTitle('ABCD systematic')
+if args.variation == 'MC': graph2.GetXaxis().SetTitle('Combined MC systematic')
+if args.variation == 'ABCD': graph2.GetXaxis().SetTitle('ABCD systematic')
 
 graph2.GetYaxis().SetTitle('95% CL Upper Limit on #sigma #times BR [pb]')
 
-graph2.Draw("A P []")
-graph1.Draw("P")
-graphNom1.Draw("P")
-graphNom2.Draw("[]")
+graph2.Draw('A P []')
+graph1.Draw('P')
+graphNom1.Draw('P')
+graphNom2.Draw('[]')
 
 err = args.error*100
-if (args.variation == "MC"): percent = str("%.3f" % err)
-if (args.variation == "ABCD"): percent = str("%.1f" % err)
+if (args.variation == 'MC'): percent = str('%.3f' % err)
+if (args.variation == 'ABCD'): percent = str('%.1f' % err)
 
 r.gStyle.SetTextSize(0.05)
-r.ATLASLabel(0.2,0.87,"Internal",1)
+r.ATLASLabel(0.2,0.87,'Internal',1)
 r.gStyle.SetTextSize(0.035)
-r.myText(0.2,0.83,1,"m_{H} = "+args.mH+" GeV, m_{s} = "+args.mS+" GeV, c#tau = "+str(args.ctau)+" m")
-r.myText(0.2,0.79,1,"Nominal "+args.variation+" systematic = "+percent+"%")
-r.myMarkerText(0.23,0.76,r.kBlue,20,"Nominal",1)
-r.myMarkerText(0.23,0.72,r.kBlack,20,"Variations",1)
+r.myText(0.2,0.83,1,'m_{H} = '+args.mH+' GeV, m_{s} = '+args.mS+' GeV, c#tau = '+str(args.ctau)+' m')
+r.myText(0.2,0.79,1,'Nominal '+args.variation+' systematic = '+percent+'%')
+r.myMarkerText(0.23,0.76,r.kBlue,20,'Nominal',1)
+r.myMarkerText(0.23,0.72,r.kBlack,20,'Variations',1)
 
-canvas.SaveAs(args.plotName)
+canvas.SaveAs('output/sensitivity_mH'+args.mH+'_mS'+args.mS+'_'+args.plotName)
+
+#-----------------------------------------------------------------------------------------------------
+#Methods to get TGraphAsymmErrors from TH1's
+def getTGraphAsymErrs(nominalHist,upHist,dnHist):
+  result = r.TGraphAsymmErrors()
+  for ibin in range(0,nominalHist.GetNbinsX()+1):
+     nominalY=nominalHist.GetBinContent(ibin)
+     nominalX=nominalHist.GetBinCenter(ibin)
+     XErr=nominalHist.GetBinWidth(ibin)/2.
+     YErrUp=upHist.GetBinContent(ibin)
+     YErrDn=dnHist.GetBinContent(ibin)
+     result.SetPoint(ibin,nominalX,nominalY)
+     result.SetPointEYhigh(ibin,abs(nominalY-YErrUp))
+     result.SetPointEYlow(ibin,abs(nominalY-YErrDn))
+     result.SetPointEXlow(ibin,XErr)
+     result.SetPointEXhigh(ibin,XErr)
+  return result
+
+def getTGraphPoint(nominalHist,upHist,dnHist,xval,errval):
+  result = r.TGraphAsymmErrors()
+  ibin = nominalHist.FindBin(xval)
+  nominalY=nominalHist.GetBinContent(ibin)
+  YErrUp=upHist.GetBinContent(ibin)
+  YErrDn=dnHist.GetBinContent(ibin)
+  result.SetPoint(0,errval,nominalY)
+  result.SetPointEYhigh(0,abs(nominalY-YErrUp))
+  result.SetPointEYlow(0,abs(nominalY-YErrDn))
+  return result
+
+def getTGraph(hist):
+  result = r.TGraph()
+  for ibin in range(0,hist.GetNbinsX()+1):
+    histY=hist.GetBinContent(ibin)
+    histX=hist.GetBinCenter(ibin)
+    result.SetPoint(ibin,histX,histY)
+  return result
+
+
+
